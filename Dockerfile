@@ -27,4 +27,4 @@ COPY --from=builder /usr/local/share/xray /usr/local/share/xray
 
 RUN mkdir -p /var/lib/pg-node/certs
 
-ENTRYPOINT ["sh", "-c", "openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -keyout /var/lib/pg-node/certs/ssl_key.pem -out /var/lib/pg-node/certs/ssl_cert.pem -days 3650 -nodes -subj '/CN=thomas.proxy.rlwy.net' -addext 'subjectAltName=DNS:thomas.proxy.rlwy.net' && exec ./main"]
+ENTRYPOINT ["sh", "-c", "openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -keyout /var/lib/pg-node/certs/ssl_key.pem -out /var/lib/pg-node/certs/ssl_cert.pem -days 3650 -nodes -subj '/CN=thomas.proxy.rlwy.net' -addext 'subjectAltName=DNS:thomas.proxy.rlwy.net' && echo '===CERTIFICATE START===' && cat /var/lib/pg-node/certs/ssl_cert.pem && echo '===CERTIFICATE END===' && exec ./main"]
