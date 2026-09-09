@@ -25,4 +25,6 @@ COPY --from=builder /src/main /app/main
 COPY --from=builder /usr/local/bin/xray /usr/local/bin/xray
 COPY --from=builder /usr/local/share/xray /usr/local/share/xray
 
-ENTRYPOINT ["sh", "-c", "mkdir -p /var/lib/pg-node/certs && if [ ! -f /var/lib/pg-node/certs/ssl_cert.pem ] || [ ! -f /var/lib/pg-node/certs/ssl_key.pem ]; then openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -keyout /var/lib/pg-node/certs/ssl_key.pem -out /var/lib/pg-node/certs/ssl_cert.pem -days 3650 -nodes -subj '/CN=thomas.proxy.rlwy.net' -addext 'subjectAltName=DNS:thomas.proxy.rlwy.net'; fi && exec ./main"]
+RUN mkdir -p /var/lib/pg-node/certs
+
+ENTRYPOINT ["sh", "-c", "openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -keyout /var/lib/pg-node/certs/ssl_key.pem -out /var/lib/pg-node/certs/ssl_cert.pem -days 3650 -nodes -subj '/CN=thomas.proxy.rlwy.net' -addext 'subjectAltName=DNS:thomas.proxy.rlwy.net' && exec ./main"]
